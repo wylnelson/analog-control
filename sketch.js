@@ -12,16 +12,18 @@ var inData;
 
 function setup() {
   createCanvas(600, 600);
+  inData = 0;
+   map(inData, 0, 255, 0, 5);
 
-  serial = new p5.SerialPort(); 
+  serial = new p5.SerialPort();
   serial.on('list', printList);
-  serial.on('connected', serverConnected); 
-  serial.on('open', portOpen); 
-  serial.on('data', serialEvent); 
-  serial.on('error', serialError); 
-  serial.on('close', portClose); 
+  serial.on('connected', serverConnected);
+  serial.on('open', portOpen);
+  serial.on('data', serialEvent);
+  serial.on('error', serialError);
+  serial.on('close', portClose);
   serial.list();
-  serial.open(portName); 
+  serial.open(portName);
 
   for (var j = 0; j < 1; j++)
     moon[j] = new Moon(300, 700, 30, 255, 1);
@@ -34,7 +36,6 @@ function setup() {
 
 function draw() {
   background(0);
-
   for (var j = 0; j < moon.length; j++) {
     moon[j].display();
 
@@ -45,24 +46,24 @@ function draw() {
     }
 
     if (moon[j].y1 < 600 && moon[j].y1 > 0) {
-      text("UP", 300, 500)
+      text("SAVE THE MOON FROM THE ASTEROID BELT", 150, 550)
     }
     if (moon[j].y1 < -30) {
       fill(50);
       stroke(255);
       textSize(40);
       text("YOU SAVED THE MOON!", 50, 300)
-      //noLoop();
+        //noLoop();
     }
 
   }
 
   for (var i = 0; i < asteroids.length; i++) {
     asteroids[i].display();
-
+      
   }
 
-fill(255);
+  fill(255);
   text("sensor value: " + inData, 30, 30);
 
 }
@@ -70,17 +71,16 @@ fill(255);
 function Asteroid(x, y, r, rad1, radius, cc) {
   this.x = x;
   this.y = y;
-  this.r = r; 
-//  this.speed = speed;
-  this.rad1 = rad1; 
-  this.radius = radius; 
+  this.r = r;
+  this.rad1 = rad1;
+  this.radius = radius;
   this.cc = cc;
 
   this.display = function() {
     fill(this.cc);
     stroke(0);
     ellipse(this.x + this.r * cos(radians(this.rad1)), this.y + this.r * sin(radians(this.rad1)), this.radius); //code inspired by Rodger
- //   this.rad1 += this.speed;
+  this.rad1 += inData;
   }
 }
 
@@ -89,7 +89,7 @@ function Moon(x1, y1, r1, cc1, speed1) {
   this.y1 = y1;
   this.r1 = r1;
   this.cc1 = cc1;
-  this.speed1 = speed1
+  this.speed1 = speed1;
 
   this.display = function() {
     fill(this.cc1);
@@ -99,7 +99,7 @@ function Moon(x1, y1, r1, cc1, speed1) {
 
   this.collide = function(other) {
     var d = dist(this.x1, this.y1, other.x + other.r * cos(radians(other.rad1)), other.y + other.r * sin(radians(other.rad1)))
-    if (d < this.r) {
+    if (d < this.r1) {
       return true;
     } else {
       return false;

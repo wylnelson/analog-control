@@ -28,7 +28,7 @@ function setup() {
   for (var j = 0; j < 1; j++)
     moon[j] = new Moon(300, 700, 30, 255, 1);
 
-  for (var i = 0; i < 30; i++) {
+  for (var i = 0; i < 20; i++) {
     asteroids[i] = new Asteroid(random(250, 300), random(250, 300), random(100, 270), random(0, 360), random(20, 50), random(50, 200));
   }
 
@@ -41,7 +41,8 @@ function draw() {
 
     for (var i = 0; i < asteroids.length; i++) {
       if (moon[j].collide(asteroids[i])) {
-        text("TOUCHING", 300, 300);
+        text("YOU CRASHED THE MOON", 200, 300);
+        noLoop();
       }
     }
 
@@ -53,7 +54,7 @@ function draw() {
       stroke(255);
       textSize(40);
       text("YOU SAVED THE MOON!", 50, 300)
-        //noLoop();
+        noLoop();
     }
 
   }
